@@ -1,0 +1,97 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="pearprojectModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="client">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Address" Type="String" MaxLength="50" FixedLength="true" Unicode="true" />
+    <Property Name="Mobile" Type="String" MaxLength="13" FixedLength="false" Unicode="true" />
+    <Property Name="DateOfBirth" Type="DateTime" Precision="0" />
+    <Property Name="imageName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="clientType" Relationship="Self.FK_clientType_client" FromRole="client" ToRole="clientType" />
+    <NavigationProperty Name="images" Relationship="Self.FK_images_client" FromRole="client" ToRole="images" />
+  </EntityType>
+  <EntityType Name="clientType">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="clientID" Type="Int32" />
+    <Property Name="typeID" Type="Int32" />
+    <NavigationProperty Name="client" Relationship="Self.FK_clientType_client" FromRole="clientType" ToRole="client" />
+    <NavigationProperty Name="type" Relationship="Self.FK_clientType_type" FromRole="clientType" ToRole="type" />
+  </EntityType>
+  <EntityType Name="images">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="clientID" Type="Int32" />
+    <Property Name="images1" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="client" Relationship="Self.FK_images_client" FromRole="images" ToRole="client" />
+  </EntityType>
+  <EntityType Name="type">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="type1" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="clientType" Relationship="Self.FK_clientType_type" FromRole="type" ToRole="clientType" />
+  </EntityType>
+  <Association Name="FK_clientType_client">
+    <End Role="client" Type="Self.client" Multiplicity="0..1" />
+    <End Role="clientType" Type="Self.clientType" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="client">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="clientType">
+        <PropertyRef Name="clientID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_images_client">
+    <End Role="client" Type="Self.client" Multiplicity="0..1" />
+    <End Role="images" Type="Self.images" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="client">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="images">
+        <PropertyRef Name="clientID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_clientType_type">
+    <End Role="type" Type="Self.type" Multiplicity="0..1" />
+    <End Role="clientType" Type="Self.clientType" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="type">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="clientType">
+        <PropertyRef Name="typeID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="pearprojectEntities1" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="client" EntityType="Self.client" />
+    <EntitySet Name="clientType" EntityType="Self.clientType" />
+    <EntitySet Name="images" EntityType="Self.images" />
+    <EntitySet Name="type" EntityType="Self.type" />
+    <AssociationSet Name="FK_clientType_client" Association="Self.FK_clientType_client">
+      <End Role="client" EntitySet="client" />
+      <End Role="clientType" EntitySet="clientType" />
+    </AssociationSet>
+    <AssociationSet Name="FK_images_client" Association="Self.FK_images_client">
+      <End Role="client" EntitySet="client" />
+      <End Role="images" EntitySet="images" />
+    </AssociationSet>
+    <AssociationSet Name="FK_clientType_type" Association="Self.FK_clientType_type">
+      <End Role="type" EntitySet="type" />
+      <End Role="clientType" EntitySet="clientType" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

@@ -1,0 +1,101 @@
+﻿@model WebApplication1.Models.viewModel
+
+@using WebApplication1.Models;
+@{
+    pearprojectEntities context = new pearprojectEntities();
+    List<type> AllTypes = context.types.ToList();
+
+    MultiSelectList typess = new MultiSelectList(AllTypes, "id", "types");
+    ViewBag.Title = "Index";
+
+    List<WebApplication1.Models.viewModel> list = ViewBag.clients;
+    List<WebApplication1.Models.image> imagelist = ViewBag.imag;
+    WebApplication1.Models.viewModel client = ViewBag.client1;
+
+    var xlist = context.clients.Select(z => new viewModel
+    {
+        Address = z.Address,
+        DateOfBirth = z.DateOfBirth,
+        Name = z.Name,
+        imageName = z.imageName,
+        id = z.id,
+        Mobile = z.Mobile
+    });
+
+
+
+}
+
+
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Address)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Mobile)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.DateOfBirth)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.imageName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.images)
+        </th>
+
+        <th></th>
+    </tr>
+
+    @foreach (var item in xlist)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Address)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Mobile)
+            </td>
+            <td>
+
+                @Html.DisplayFor(modelItem => item.DateOfBirth)
+            </td>
+            <td>
+
+                <img src="../../images/@item.imageName" width="30px" height="30px">
+
+            </td>
+
+
+
+
+            <td>
+                @Html.ActionLink("show more images", "showImages", new { id = item.id }, new { id = "btnshow" })|
+                @*<input type="submit" id="btnEdit" value="Edit" onclick="Edit(@item.id),collection" />*@
+                @Html.ActionLink("Edit", "Edit", new { id = item.id }, new { id = "btnEdit" }) |
+                @*<input type="submit" id="btnDelete" value="Delete" />*@
+                @Html.ActionLink("Delete", "Delete", new { id = item.id }, new { id = "btnDelete" })
+            </td>
+        </tr>
+    }
+
+</table>
+
+@{
+    ViewBag.Title = "Create";
+}
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
+
